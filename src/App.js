@@ -46,44 +46,53 @@ export default function App() {
   };
 
   return (
-    <div className="p-4 max-w-4xl mx-auto space-y-6">
+    <div className="p-6 max-w-4xl mx-auto space-y-8 bg-gray-50 rounded-lg shadow-lg">
       <Card>
-        <CardContent className="space-y-4 p-4">
-          <h2 className="text-xl font-bold">Add Firm</h2>
-          <div className="flex gap-2">
+        <CardContent className="space-y-6 p-6 bg-white rounded-xl shadow-sm">
+          <h2 className="text-2xl font-semibold text-gray-700">Add Firm</h2>
+          <div className="flex gap-4">
             <Input
               placeholder="Firm name"
               value={firmInput.name}
               onChange={(e) => setFirmInput({ ...firmInput, name: e.target.value })}
+              className="border p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <Input
               placeholder="Quota"
               type="number"
               value={firmInput.quota}
               onChange={(e) => setFirmInput({ ...firmInput, quota: e.target.value })}
+              className="border p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <Button onClick={addFirm}>Add Firm</Button>
+            <Button
+              onClick={addFirm}
+              className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-200"
+            >
+              Add Firm
+            </Button>
           </div>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-gray-600">
             Current firms: {firms.map(f => `${f.name} (${f.quota})`).join(", ")}
           </div>
         </CardContent>
       </Card>
 
       <Card>
-        <CardContent className="space-y-4 p-4">
-          <h2 className="text-xl font-bold">Add Student</h2>
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-2">
+        <CardContent className="space-y-6 p-6 bg-white rounded-xl shadow-sm">
+          <h2 className="text-2xl font-semibold text-gray-700">Add Student</h2>
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
             <Input
               placeholder="Name"
               value={studentInput.name}
               onChange={(e) => setStudentInput({ ...studentInput, name: e.target.value })}
+              className="border p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <Input
               placeholder="Points"
               type="number"
               value={studentInput.points}
               onChange={(e) => setStudentInput({ ...studentInput, points: e.target.value })}
+              className="border p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             {studentInput.choices.map((choice, idx) => (
               <Input
@@ -95,28 +104,40 @@ export default function App() {
                   newChoices[idx] = e.target.value;
                   setStudentInput({ ...studentInput, choices: newChoices });
                 }}
+                className="border p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             ))}
-            <Button onClick={addStudent} className="col-span-2 md:col-span-1">Add Student</Button>
+            <Button
+              onClick={addStudent}
+              className="col-span-2 md:col-span-1 bg-green-500 text-white p-2 rounded-lg shadow-md hover:bg-green-600 transition duration-200"
+            >
+              Add Student
+            </Button>
           </div>
         </CardContent>
       </Card>
 
       <div className="flex justify-center">
-        <Button onClick={classifyStudents}>Classify</Button>
+        <Button
+          onClick={classifyStudents}
+          className="bg-purple-500 text-white p-2 rounded-lg shadow-md hover:bg-purple-600 transition duration-200"
+        >
+          Classify
+        </Button>
       </div>
 
-      {/* Добавяме разстояние между имената и точките */}
       {students.length > 0 && (
         <Card>
-          <CardContent className="p-4">
-            <h2 className="text-xl font-bold mb-2">Added Students</h2>
-            <ul className="space-y-1">
+          <CardContent className="p-6 bg-white rounded-xl shadow-sm">
+            <h2 className="text-2xl font-semibold text-gray-700">Added Students</h2>
+            <ul className="space-y-4">
               {students.map((student, idx) => (
-                <li key={idx} className="border-b py-1">
-                  <span className="font-semibold">{student.name}</span>
-                  <span className="ml-4">{student.points} Points</span>
-                  <div className="text-sm text-muted-foreground">{`Choices: ${student.choices.join(", ")}`}</div>
+                <li key={idx} className="flex items-center justify-between p-4 border-b rounded-lg bg-gray-50">
+                  <div>
+                    <span className="font-semibold text-gray-800">{student.name}</span>
+                    <span className="ml-4 text-sm text-gray-600">{student.points} Points</span>
+                    <div className="text-xs text-gray-500">Choices: {student.choices.join(", ")}</div>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -126,11 +147,14 @@ export default function App() {
 
       {results.length > 0 && (
         <Card>
-          <CardContent className="p-4">
-            <h2 className="text-xl font-bold mb-2">Results</h2>
-            <ul className="space-y-1">
+          <CardContent className="p-6 bg-white rounded-xl shadow-sm">
+            <h2 className="text-2xl font-semibold text-gray-700">Results</h2>
+            <ul className="space-y-4">
               {results.map((r, idx) => (
-                <li key={idx} className="border-b py-1">{r.name} → <strong>{r.firm}</strong></li>
+                <li key={idx} className="flex justify-between p-4 border-b rounded-lg bg-gray-50">
+                  <span className="font-semibold text-gray-800">{r.name}</span>
+                  <strong className="text-blue-500">{r.firm}</strong>
+                </li>
               ))}
             </ul>
           </CardContent>
