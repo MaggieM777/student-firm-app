@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button } from "./components/ui/button"; // Обновен път
-import { Card, CardContent } from "./components/ui/card"; // Обновен път
-import { Input } from "./components/ui/input"; // Обновен път
+import { Button } from "./components/ui/button";
+import { Card, CardContent } from "./components/ui/card";
+import { Input } from "./components/ui/input";
 
 export default function App() {
   const [students, setStudents] = useState([]);
@@ -102,6 +102,22 @@ export default function App() {
         </CardContent>
       </Card>
 
+      {/* Show Added Students */}
+      {students.length > 0 && (
+        <Card>
+          <CardContent className="p-4">
+            <h2 className="text-xl font-bold mb-2">Added Students</h2>
+            <ul className="space-y-1">
+              {students.map((student, idx) => (
+                <li key={idx} className="border-b py-1">
+                  <strong>{student.name}</strong> - Points: {student.points} - Choices: {student.choices.join(", ")}
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
+
       <div className="flex justify-center">
         <Button onClick={classifyStudents}>Classify</Button>
       </div>
@@ -121,3 +137,4 @@ export default function App() {
     </div>
   );
 }
+
