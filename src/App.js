@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Button } from "./components/ui/button"; // Обновен път
+import { Card, CardContent } from "./components/ui/card"; // Обновен път
+import { Input } from "./components/ui/input"; // Обновен път
 
 export default function App() {
   const [students, setStudents] = useState([]);
