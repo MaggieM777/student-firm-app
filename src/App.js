@@ -109,8 +109,10 @@ export default function App() {
             <h2 className="text-xl font-bold mb-2">Added Students</h2>
             <ul className="space-y-1">
               {students.map((student, idx) => (
-                <li key={idx} className="border-b py-1">
-                  <strong>{student.name}</strong> - Points: {student.points} - Choices: {student.choices.join(", ")}
+                <li key={idx} className="border-b py-1 flex items-center gap-4">
+                  <span className="font-semibold">{student.name}</span>
+                  <span className="text-gray-600">Points: {student.points}</span>
+                  <span className="text-gray-500">Choices: {student.choices.join(", ")}</span>
                 </li>
               ))}
             </ul>
@@ -128,7 +130,10 @@ export default function App() {
             <h2 className="text-xl font-bold mb-2">Results</h2>
             <ul className="space-y-1">
               {results.map((r, idx) => (
-                <li key={idx} className="border-b py-1">{r.name} → <strong>{r.firm}</strong></li>
+                <li key={idx} className="border-b py-1 flex justify-between">
+                  <span>{r.name}</span>
+                  <strong>{r.firm}</strong>
+                </li>
               ))}
             </ul>
           </CardContent>
@@ -137,4 +142,3 @@ export default function App() {
     </div>
   );
 }
-
