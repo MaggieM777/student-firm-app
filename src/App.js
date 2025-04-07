@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button } from "./components/ui/button";
-import { Card, CardContent } from "./components/ui/card";
-import { Input } from "./components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 export default function App() {
   const [students, setStudents] = useState([]);
@@ -102,17 +102,21 @@ export default function App() {
         </CardContent>
       </Card>
 
-      {/* Show Added Students */}
+      <div className="flex justify-center">
+        <Button onClick={classifyStudents}>Classify</Button>
+      </div>
+
+      {/* Добавяме разстояние между имената и точките */}
       {students.length > 0 && (
         <Card>
           <CardContent className="p-4">
             <h2 className="text-xl font-bold mb-2">Added Students</h2>
             <ul className="space-y-1">
               {students.map((student, idx) => (
-                <li key={idx} className="border-b py-1 flex items-center gap-4">
+                <li key={idx} className="border-b py-1">
                   <span className="font-semibold">{student.name}</span>
-                  <span className="text-gray-600">Points: {student.points}</span>
-                  <span className="text-gray-500">Choices: {student.choices.join(", ")}</span>
+                  <span className="ml-4">{student.points} Points</span>
+                  <div className="text-sm text-muted-foreground">{`Choices: ${student.choices.join(", ")}`}</div>
                 </li>
               ))}
             </ul>
@@ -120,20 +124,13 @@ export default function App() {
         </Card>
       )}
 
-      <div className="flex justify-center">
-        <Button onClick={classifyStudents}>Classify</Button>
-      </div>
-
       {results.length > 0 && (
         <Card>
           <CardContent className="p-4">
             <h2 className="text-xl font-bold mb-2">Results</h2>
             <ul className="space-y-1">
               {results.map((r, idx) => (
-                <li key={idx} className="border-b py-1 flex justify-between">
-                  <span>{r.name}</span>
-                  <strong>{r.firm}</strong>
-                </li>
+                <li key={idx} className="border-b py-1">{r.name} → <strong>{r.firm}</strong></li>
               ))}
             </ul>
           </CardContent>
