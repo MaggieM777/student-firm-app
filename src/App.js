@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,13 +8,21 @@ export default function App() {
   const [firms, setFirms] = useState([]);
   const [results, setResults] = useState([]);
 
-  const [studentInput, setStudentInput] = useState({ name: "", points: "", choices: ["", "", "", ""] });
+  const [studentInput, setStudentInput] = useState({ name: "", points: "", choices: [] });
   const [firmInput, setFirmInput] = useState({ name: "", quota: "" });
+
+  // Обновява броя на dropdown-и спрямо броя на фирмите
+  useEffect(() => {
+    setStudentInput((prev) => ({
+      ...prev,
+      choices: Array(firms.length).fill("").map((_, i) => prev.choices[i] || "")
+    }));
+  }, [firms]);
 
   const addStudent = () => {
     if (!studentInput.name || !studentInput.points) return;
     setStudents([...students, { ...studentInput, points: Number(studentInput.points) }]);
-    setStudentInput({ name: "", points: "", choices: ["", "", "", ""] });
+    setStudentInput({ name: "", points: "", choices: Array(firms.length).fill("") });
   };
 
   const addFirm = () => {
@@ -55,19 +63,16 @@ export default function App() {
               placeholder="Firm name"
               value={firmInput.name}
               onChange={(e) => setFirmInput({ ...firmInput, name: e.target.value })}
-              className="border p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border p-2 rounded-lg shadow-sm"
             />
             <Input
               placeholder="Quota"
               type="number"
               value={firmInput.quota}
               onChange={(e) => setFirmInput({ ...firmInput, quota: e.target.value })}
-              className="border p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border p-2 rounded-lg shadow-sm"
             />
-            <Button
-              onClick={addFirm}
-              className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-200"
-            >
+            <Button onClick={addFirm} className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600">
               Add Firm
             </Button>
           </div>
@@ -85,31 +90,37 @@ export default function App() {
               placeholder="Name"
               value={studentInput.name}
               onChange={(e) => setStudentInput({ ...studentInput, name: e.target.value })}
-              className="border p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border p-2 rounded-lg shadow-sm"
             />
             <Input
               placeholder="Points"
               type="number"
               value={studentInput.points}
               onChange={(e) => setStudentInput({ ...studentInput, points: e.target.value })}
-              className="border p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border p-2 rounded-lg shadow-sm"
             />
             {studentInput.choices.map((choice, idx) => (
-              <Input
+              <select
                 key={idx}
-                placeholder={`Choice ${idx + 1}`}
                 value={choice}
                 onChange={(e) => {
                   const newChoices = [...studentInput.choices];
                   newChoices[idx] = e.target.value;
                   setStudentInput({ ...studentInput, choices: newChoices });
                 }}
-                className="border p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+                className="border p-2 rounded-lg shadow-sm"
+              >
+                <option value="">Select Firm {idx + 1}</option>
+                {firms.map((firm) => (
+                  <option key={firm.name} value={firm.name}>
+                    {firm.name}
+                  </option>
+                ))}
+              </select>
             ))}
             <Button
               onClick={addStudent}
-              className="col-span-2 md:col-span-1 bg-green-500 text-white p-2 rounded-lg shadow-md hover:bg-green-600 transition duration-200"
+              className="col-span-2 md:col-span-1 bg-green-500 text-white p-2 rounded-lg hover:bg-green-600"
             >
               Add Student
             </Button>
@@ -120,7 +131,7 @@ export default function App() {
       <div className="flex justify-center">
         <Button
           onClick={classifyStudents}
-          className="bg-purple-500 text-white p-2 rounded-lg shadow-md hover:bg-purple-600 transition duration-200"
+          className="bg-purple-500 text-white p-2 rounded-lg hover:bg-purple-600"
         >
           Classify
         </Button>
@@ -132,12 +143,9 @@ export default function App() {
             <h2 className="text-2xl font-semibold text-gray-700">Added Students</h2>
             <ul className="space-y-4">
               {students.map((student, idx) => (
-                <li key={idx} className="flex items-center justify-between p-4 border-b rounded-lg bg-gray-50">
-                  <div>
-                    <span className="font-semibold text-gray-800">{student.name}</span>
-                    <span className="ml-4 text-sm text-gray-600">{student.points} Points</span>
-                    <div className="text-xs text-gray-500">Choices: {student.choices.join(", ")}</div>
-                  </div>
+                <li key={idx} className="p-4 border-b bg-gray-50 rounded-lg">
+                  <div className="font-semibold text-gray-800">{student.name} <span className="text-sm text-gray-600">({student.points} pts)</span></div>
+                  <div className="text-sm text-gray-500">Choices: {student.choices.join(", ")}</div>
                 </li>
               ))}
             </ul>
